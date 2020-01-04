@@ -1,0 +1,66 @@
+{
+  "outbounds": [
+    {
+      "protocol": "vmess", // 出口协议
+      "settings": {
+        "vnext": [
+          {
+            "address": "XXXXXXX", // 服务器地址，请修改为你自己的服务器 IP 或域名
+            "port": XXXXXXXX, // 服务器端口，请修改为你自己的端口号，数字值不用加引号
+            "users": [
+              {
+                "id": "XXXXXXXXXXXXXXXXXXXXXXXX", // 用户ID，UUID，修改为你自己的。必须与服务器端配置相同
+                "alterId": XX // 此处的值也应当与服务器相同（实际是<=服务器值即可）
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "protocol": "freedom",
+      "settings": {},
+      "tag": "direct" // 如果要使用路由，这个 tag 是一定要有的，
+      // 在这里 direct 就是 freedom 的一个标号，在路由中说 direct V2Ray 就知道是这里的 freedom 了
+    },
+    {
+      "protocol": "blackhole",
+      "settings": {},
+      "tag": "adblock" //同样的，这个 tag 也是要有的，在路由中说 adblock 就知道是这里的 blackhole（黑洞） 了
+    }
+  ],
+  "routing": {
+    "domainStrategy": "IPOnDemand",
+    "rules": [
+      {
+        "type": "field",
+        "outboundTag": "direct",
+        "domain": [
+          "geosite:cn"
+        ] // 国内域名直连
+      },
+      {
+        "domain": [
+          "geosite:category-ads"
+        ], // 常见广告域名，block掉
+        "type": "field",
+        "outboundTag": "adblock"
+      },
+      {
+        "domain": [
+          "geosite:speedtest"
+        ], // 测速网站，直连
+        "type": "field",
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "outboundTag": "direct",
+        "ip": [
+          "geoip:cn", // 国内IP直连
+          "geoip:private" // 局域网IP直连
+        ]
+      }
+    ]
+  }
+}

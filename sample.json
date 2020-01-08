@@ -15,7 +15,8 @@
             ]
           }
         ]
-      }
+      },
+      "mux": {"enabled": true}
     },
     {
       "protocol": "freedom",
@@ -59,6 +60,13 @@
         "ip": [
           "geoip:cn", // 国内IP直连
           "geoip:private" // 局域网IP直连
+        ]
+      },
+      {
+        "type": "field",
+        "outboundTag": "direct",
+        "protocol": [
+          "bittorrent" // BT下载强制直连
         ]
       }
     ]
